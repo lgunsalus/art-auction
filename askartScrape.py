@@ -40,21 +40,27 @@ def getPageItems(soup):
 		except:
 			items.append(piece.find('b',text='Title:  ').next_sibling.i.contents[0].strip())
 		try:
-			items.append(piece.find('b',text='Sales Price**:') .next_sibling.string.strip())
+			items.append(piece.find('b',text='Sales Price**:').next_sibling.string.split()[0])
 		except:
-			items.append(piece.find('b',text='Hammer Price*:') .next_sibling.string.strip())
-		items.append(piece.find('b',text='Low Estimate:') .next_sibling.string.strip())
-		items.append(piece.find('b',text='High Estimate:') .next_sibling.string.strip())
+			hammer = piece.find('b',text='Hammer Price*:').next_sibling.string
+			if(hammer == '  -not sold-'): 
+				items.append('  -not sold-'.strip())
+			elif(hammer.strip() == ""): 
+				items.append("")
+			else: 
+				items.append(hammer.split()[0])
+		items.append(piece.find('b',text='Low Estimate:').next_sibling.string.split()[0])
+		items.append(piece.find('b',text='High Estimate:').next_sibling.string.split()[0])
 		try:
-			items.append(piece.find('b',text='Signature:') .next_sibling.string.strip())
+			items.append(piece.find('b',text='Signature:').next_sibling.string.strip())
 		except:
 			items.append("unknown") # Signature information not present
-		items.append(piece.find('b',text='Size:  ') .next_sibling.string.strip())
-		items.append(piece.find('b',text='Created:') .next_sibling.string.strip())
+		items.append(piece.find('b',text='Size:  ').next_sibling.string.strip())
+		items.append(piece.find('b',text='Created:').next_sibling.string.strip())
 		items.append(piece.find('b',text='Medium:              ') .next_sibling.string.strip())
-		items.append(piece.find('b',text='Auction Lot:') .next_sibling.string.strip())
+		items.append(piece.find('b',text='Auction Lot:').next_sibling.string.strip())
 		items.append(piece.find('a').contents[0])
-		items.append(piece.find('b',text='Auction Date:') .next_sibling.string.strip())
+		items.append(piece.find('b',text='Auction Date:').next_sibling.string.strip())
 		allWork.append(items)
 	return allWork
 
@@ -103,4 +109,3 @@ if __name__ == "__main__":
 # Artist: Ed Ruscha
 #pageLink = "http://www.askart.com/auction_records/Ed_Ruscha/30133/Ed_Ruscha.aspx"
 #grabArtist(pageLink, "EdRuscha")
-
